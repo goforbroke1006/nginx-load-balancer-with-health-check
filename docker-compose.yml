@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  replica-1:
+    hostname: replica-001-hostname
+    image: some-your-service:latest
+
+  replica-2:
+    hostname: replica-002-hostname
+    image: some-your-service:latest
+
+  replica-3:
+    hostname: replica-003-hostname
+    image: some-your-service:latest
+
+  replica-4:
+    hostname: replica-004-hostname
+    image: some-your-service:latest
+
+  load-balancer-with-health-check:
+    image: goforbroke1006/nginx:1.14.2-hc
+    tty: true
+    links:
+      - replica-1
+      - replica-2
+      - replica-3
+      - replica-4
+    ports:
+      - '9900:80'
+    volumes:
+      - './deployment/nginx.conf:/usr/local/nginx/conf/nginx.conf'
